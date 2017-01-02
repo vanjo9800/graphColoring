@@ -1,0 +1,11 @@
+Color 1: 4 2 9 7 
+Color 2: 1 5 10 6 
+Color 3: 8 3 
+Color 4: 11 
+
+The answer is 4
+
+
+Colors used: 4
+2 1 3 1 2 2 1 3 1 2 4 
+Press any key to close the window...

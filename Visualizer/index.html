@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Graph Visualiser</title>
+
+	<link href="vis.min.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+
+	<script type="text/javascript" src="vis.min.js"></script>
+	<script type="text/javascript" src="socket.io/socket.io.js"></script>
+	<script src="bootstrap/jquery.min.js"></script>
+	<script src="bootstrap/bootstrap.min.js"></script>
+	<script src="render.js"></script>
+	<script src="colors.js"></script>
+</head>
+<body>
+<div class="container">
+	<div class="jumbotron">
+		<h1 style="text-align:center"> Graph Visualizer </h1>
+		<h5 style="text-align:center"> Currently presenting the results from the Parallella board </h5>
+	</div>
+	<div class="page-header">
+		
+		<h4>Upload graph (<a href="http://mat.gsia.cmu.edu/COLOR/general/ccformat.ps">DIMACS</a> format):</h4>
+		<div>
+			<input type="file" style="display:inline" id="graphfile"></input>
+			<button type="button" style="display:inline" id="loadgraph" class="btn btn-primary">Load</button>
+		</div>
+		<br>
+		<div>
+			<div>Choose an algorithm and device:</div>
+			<ul class="pagination">
+			   <li id="device1"><a href="#">Ant colony on Parallella</a></li>
+			   <li id="device2"><a href="#">Ant colony on Intel i3-6098P</a></li>
+			   <li id="device3"><a href="#">Ant colony on Intel i7-4790K</a></li>
+			   <li id="device4"><a href="#">Genetic algorithm on Intel i7-4790K</a></li>
+			</ul>
+		</div>
+		<button type="button" id="compute" class="btn btn-primary">Run algorithm</button>
+		<span id="executing" style="display:none"><strong>Executing </strong><img src="executing.gif"></img></span>
+		<br>
+		<br>
+		<button type="button" class="btn btn-info" data-toggle="modal" data-target="#log">See Log</button>
+
+		<div class="modal fade" id="log" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title" id="logHeader">No tests run</h4>
+					</div>
+					<div class="modal-body">
+						<pre id="logCode"></pre>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<div id="notChosen" style="text-align:center; color:grey; width:100%">No graph file loaded</div>
+	<div class="page-header" id="loading" style="text-align:center; display:none; width:100%">
+		<img src="loading.gif"><img/>
+		<strong id="loadingPercentage"></strong>
+	</div>
+	<h3 id="colornumber" style="display:none"><strong>Colors used: <span id="numberColors">-</span></strong></h3>
+	<div id="graph" style="display:none" class="page-header"></div>
+	<div style="height:20%; width:100%"></div>
+</div>
+</body>
+</html>
