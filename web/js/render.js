@@ -128,14 +128,15 @@ function colorGraph(colored){
 
 	}
 
-	for(var i=0; i<vertexNumber; i++) 
+	colored = colored.split(" ");
+	$("#numberColors").text(colored[0]);
+	for(var i=1; i<vertexNumber; i++) 
 	{
-		var fontcolor = getContrastYIQ(colors[colored[i*2]]);
-		nodesArray.push({id: i, label: "Node "+(i+1),font: {
+		var fontcolor = getContrastYIQ(colors[colored[i]]);
+		nodesArray.push({id: i, label: "Node "+i,font: {
 			color: fontcolor
-		} , color: colors[colored[i*2]]});
+		} , color: colors[colored[i]]});
 	}
-	$("#numberColors").text(colored[vertexNumber*2]);
 
 	startNetwork(nodesArray,edgesArray);
 	$("#executing").css("display","none");
@@ -143,11 +144,11 @@ function colorGraph(colored){
 
 function computeAnswer(){
 	$("#executing").css("display","block");
-	var activeDevice;
+	var chosenAlgorithm;
 	for(var i=1;i<=4;i++){
-		if($("#device"+i).hasClass("active")) activeDevice=i;
+		if($("#algorithm"+i).hasClass("active")) chosenAlgorithm=i;
 	}
-	socket.emit('compute',{device: activeDevice , graph: graphFile});
+	socket.emit('compute',{algorithm: chosenAlgorithm , graph: graphFile});
 }
 
 socket.on('solution',function(coloring){
@@ -155,22 +156,18 @@ socket.on('solution',function(coloring){
 });
 
 socket.on('log',function(log){
-	var device;
-	if(log.device===1) device="The Parallella Board";
-	if(log.device===2) device="Intel Core i3-6098P";
-	if(log.device===3||log.device===4) device="Intel Core i7-4790K";
 	log=log.log;
-	$("#logHeader").text(device+" ("+(new Date()).toString()+")");
+	$("#logHeader").text((new Date()).toString());
 	log=log.toString();
 	$("#logCode").text(log);
 });
 
 $(document).ready(function(){
 	for(var i=1;i<=4;i++){
-		$('#device'+i).on("click",function(i){
+		$('#algorithm'+i).on("click",function(i){
 			return function(){
 				$("li.active").removeClass("active");
-				$("#device"+i).addClass("active");
+				$("#algorithm"+i).addClass("active");
 			};
 		}(i));
 	}
