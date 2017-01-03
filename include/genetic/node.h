@@ -27,8 +27,8 @@ void checkPop();
 
 void nodeMain();
 
-extern int dependencySorted[4001];
-extern int dependencySortedReverse[4001];
+extern int dependencySorted[MaxVertexNumber];
+extern int dependencySortedReverse[MaxVertexNumber];
 extern bool calculatedDependencyLevel;
 
 void calculateDependencyLevel();

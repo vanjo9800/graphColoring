@@ -199,7 +199,7 @@ void nodeMain(){
 
 	int populationSize, genotypeNumber,numberOfColors;
 	
-	Genotype* population=new Genotype[4001];
+	Genotype* population=new Genotype[MaxVertexNumber];
 	
 	while(true){
 		int incomingRequest = communication::NodeListener();
@@ -224,7 +224,7 @@ void nodeMain(){
 		}
 		if(incomingRequest == communication::NodesSendReproduceTag)
 		{
-			Genotype* children=new Genotype[4001];
+			Genotype* children=new Genotype[MaxVertexNumber];
 			communication::NodeReadReproduce(population, populationSize);
 			int childrenSize;
 			reproduce(population, populationSize, children, childrenSize);
@@ -246,14 +246,14 @@ void nodeMain(){
 	delete[] population;
 }
 
-int dependencySorted[4001];
-int dependencySortedReverse[4001];
+int dependencySorted[MaxVertexNumber];
+int dependencySortedReverse[MaxVertexNumber];
 bool calculatedDependencyLevels=false;
 
 void calculateDependencyLevels(){
 	
-	int dependencyLevel[4001];
-	int degreeSorting[4001];
+	int dependencyLevel[MaxVertexNumber];
+	int degreeSorting[MaxVertexNumber];
 
 	for(int i=0;i<vertexNumber;i++){
 		degreeSorting[i]=i;
