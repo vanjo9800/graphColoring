@@ -34,8 +34,8 @@ bin/genetic: input output
 
 bin/simann: input
 	@echo "Compiling Simulated Annealing"
-	@mpicxx ${CFLAGS} src/simann/main.cpp -c -o src/simann/simann.o
-	@mpicxx ${CFLAGS} -o bin/simann bin/input.o src/simann/simann.o
+	@mpicxx ${CFLAGS} src/simann/main.cpp -c -o bin/simann.o
+	@mpicxx ${CFLAGS} -o bin/simann bin/input.o bin/simann.o
 
 clean:
 	@echo "Cleaning binaries"
