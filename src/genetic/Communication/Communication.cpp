@@ -36,17 +36,16 @@ namespace communication{
 
 		MPI_Get_processor_name(hostname, &hostnameSize);
 
-		int GenotypeBlockSize[4001];
-		MPI_Aint GenotypeDisplacementSize[4001];
-		MPI_Datatype GenotypeTypes[4001];
-		for(int i=0;i<4001;i++){
-			GenotypeBlockSize[i]=1;
-			GenotypeDisplacementSize[i]=i*4;
-			GenotypeTypes[i]=MPI_INT;
-		}
-		
-		MPI_Type_create_struct(4000,GenotypeBlockSize,GenotypeDisplacementSize,GenotypeTypes,&MPIGenotype);
+		//Genotype a;
+		int blocklen[2] = {MaxVertexNumber,1};
+		MPI_Datatype type[2] = {MPI_INT,MPI_INT};
+		MPI_Aint displacement[2];
+		displacement[0]=0;
+		displacement[1]=MaxVertexNumber*4;
+		//reinterpret_cast<const unsigned char*>(&a.fitness) - reinterpret_cast<const unsigned char*>(&a);
 
+		MPI_Type_create_struct(2,blocklen,displacement,type,&MPIGenotype);
+	
 		MPI_Type_commit(&MPIGenotype);
 
 		printf("Process with with rank %d, started on host %s\n",processRank,hostname);
@@ -125,18 +124,8 @@ namespace communication{
 		MPI_Status NodeStatus;
 		for(int i=numberOfSlaves;i<processes;i++){
 			
-			printf("Step %d of %d\n",i,processes);
 			MPI_Probe(MPI_ANY_SOURCE,NodesSendCreateTag,MPI_COMM_WORLD,&NodeStatus);
-			int incomingPopulation;
-			MPI_Get_count(&NodeStatus,MPIGenotype,&incomingPopulation);
-			printf("Writing from %d to %d\n",blockSize*NodePlace[NodeStatus.MPI_SOURCE],blockSize*NodePlace[NodeStatus.MPI_SOURCE]+blockSize);
 			MPI_Recv(population+blockSize*NodePlace[NodeStatus.MPI_SOURCE],blockSize,MPIGenotype,NodeStatus.MPI_SOURCE,NodesSendCreateTag,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
-			for(int p=0;p<blockSize;p++){
-				printf("Starting p %d\n",p);
-				//MPI_Recv(population+blockSize*NodePlace[NodeStatus.MPI_SOURCE]+p,1,MPIGenotype,NodeStatus.MPI_SOURCE,NodesSendCreateTag,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
-				printf("Successful p %d\n",p);
-			}
-			printf("Successful step\n");
 
 			NodePlace[NodeStatus.MPI_SOURCE]=i;
 			MPI_Send( &blockSize,1,MPI_INT,NodeStatus.MPI_SOURCE,NodesSendCreateTag,MPI_COMM_WORLD);
@@ -256,15 +245,6 @@ namespace communication{
 	}
 
 	void NodeAnswerCreate(Genotype* population,int blockSize){
-	
-		//printf("Node BlockSize %d\n",blockSize);
-		for(int i=0;i<blockSize;i++){
-			for(int j=0;j<vertexNumber;j++){
-		//		printf("%d ",population[i].get(j));
-			}
-		//	printf("\n");
-			//MPI_Send(population+i,1,MPIGenotype,MasterNode,NodesSendCreateTag,MPI_COMM_WORLD);
-		}
 		MPI_Send(population,blockSize,MPIGenotype,MasterNode,NodesSendCreateTag,MPI_COMM_WORLD);
 	}
 

@@ -7,7 +7,6 @@
 class Genotype{
 
 	private:
-		//std::vector<int> colors;
 		int colors[MaxVertexNumber];
 		int fitness;
 
