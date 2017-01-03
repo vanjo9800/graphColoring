@@ -1,8 +1,8 @@
 # Comparing parallellized metaheuristic algorithms solving the Graph Coloring Problem #
 
-This is an alternative algorithm of the Ant Colony Optimization to the standard MPI-based one. It is made especially for the Epiphany processor of the Parallella board.
+We, Ivan Ivanov and Milen Ferev, are developing a scientific project which solves the Graph Coloring Problem using parallelized metaheuristic algorithms. The algorithms are optimized for the current working system and then benchmarked. Currently, a **Genetic** algorithm and an **Ant Colony Optimization** algorithm are implemented. They are still being optimized to fit our needs.
 
-Also, a the **web visualizer** is updated for this implementation fo the algorithm.
+Also, a **web visualizer** which uses Node.JS is provided. It presents the colored graph to the user.
 
 
 #Acknowledgements#
