@@ -1,7 +1,7 @@
 INCLUDEDIR=-Iinclude/
 CFLAGS= ${INCLUDEDIR} -O2 --std=c++11
 
-all: bin input output bin/antcol bin/genetic bin/simann
+all: bin input output antcol genetic simann tabus
 
 bin:
 	@mkdir -p bin
@@ -14,7 +14,7 @@ output: src/io/output.cpp
 	@echo "CC $<"
 	@mpicxx ${CFLAGS} src/io/output.cpp -c -o bin/output.o
 
-bin/antcol: input output
+antcol: input output
 	@echo "Compiling ANTCOL"
 	@mpicxx ${CFLAGS} -Iinclude/antcol/ src/antcol/master/master.cpp -c -o bin/antcolMaster.o
 	@mpicxx ${CFLAGS} -Iinclude/antcol/ src/antcol/node/node.cpp -c -o bin/antcolNode.o
@@ -22,7 +22,7 @@ bin/antcol: input output
 	@ld -r bin/antcolMain.o bin/antcolNode.o bin/antcolMaster.o -o bin/antcol.o
 	@mpicxx ${CFLAGS} -o bin/antcol bin/input.o bin/output.o bin/antcol.o
 
-bin/genetic: input output
+genetic: input output
 	@echo "Compiling Genetic Algorithm"
 	@mpicxx ${CFLAGS} -Iinclude/genetic/ src/genetic/Communication/Communication.cpp -c -o bin/geneticCommunication.o 
 	@mpicxx ${CFLAGS} -Iinclude/genetic/ src/genetic/Genotype/Genotype.cpp -c -o bin/geneticGenotype.o
@@ -32,10 +32,15 @@ bin/genetic: input output
 	@ld -r bin/geneticMain.o bin/geneticNode.o bin/geneticMaster.o bin/geneticGenotype.o bin/geneticCommunication.o -o bin/genetic.o
 	@mpicxx ${CFLAGS} -o bin/genetic bin/input.o bin/output.o bin/genetic.o
 
-bin/simann: input
+simann: input
 	@echo "Compiling Simulated Annealing"
 	@mpicxx ${CFLAGS} src/simann/main.cpp -c -o bin/simann.o
 	@mpicxx ${CFLAGS} -o bin/simann bin/input.o bin/simann.o
+
+tabus: input
+	@echo "Compiling Tabu Search"
+	@mpicxx ${CFLAGS} src/tabus/main.cpp -c -o bin/tabus.o
+	@mpicxx ${CFLAGS} -o bin/tabus bin/input.o bin/tabus.o
 
 clean:
 	@echo "Cleaning binaries"

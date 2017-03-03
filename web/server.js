@@ -108,11 +108,23 @@ socketServer.sockets.on('connection', function(socket){
 		if(data.algorithm===3){ //Simulated annealing
 			data=data.graph;
 			fs.writeFile("temp/task",data,function(error){
-				child_process.exec('time mpirun -n 4 ../bin/simann temp/task temp/answer', function(error,stdout, stderr){
+				child_process.exec('time mpirun -n 4 ../bin/simann temp/task', function(error,stdout, stderr){
 					var coloring=fs.readFileSync('temp/answer').toString();
 
 					socket.emit('solution', coloring);
 					stdout={algorithm:3, log:stdout};
+					socket.emit('log',stdout);
+				});
+			});
+		}
+		if(data.algorithm===4){ //Tabu search
+			data=data.graph;
+			fs.writeFile("temp/task",data,function(error){
+				child_process.exec('time mpirun -n 4 ../bin/tabus temp/task', function(error,stdout, stderr){
+					var coloring=fs.readFileSync('temp/answer').toString();
+
+					socket.emit('solution', coloring);
+					stdout={algorithm:4, log:stdout};
 					socket.emit('log',stdout);
 				});
 			});
