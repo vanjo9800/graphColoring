@@ -68,15 +68,11 @@ function loadGraph() {
 			for(var i=0; i<inputArray.length; i++)
 			{
 				var newArr = inputArray[i].split(" ");
-				for(var j =0; j< newArr.length; j++)
-				{
-					if(newArr[0] == 'p'){
-						vertexNumber=parseInt(newArr[2]);
-					}
-					if(newArr[0] == 'e'){
-						edgesArray.push({from: newArr[j+1]-1,to: newArr[j+2]-1});
-						continue;
-					}
+				if(newArr[0] == 'p'){
+					vertexNumber=parseInt(newArr[2]);
+				}
+				if(newArr[0] == 'e'){
+					edgesArray.push({from: newArr[1]-1,to: newArr[2]-1});
 				}
 
 			}
@@ -115,27 +111,22 @@ function colorGraph(colored){
 	for(var i=0; i<inputArray.length; i++)
 	{
 		var newArr = inputArray[i].split(" ");
-		for(var j =0; j< newArr.length; j++)
-		{
-			if(newArr[0] == 'p'){
-				vertexNumber=parseInt(newArr[2]);
-			}
-			if(newArr[0] == 'e'){
-				edgesArray.push({from: newArr[j+1]-1,to: newArr[j+2]-1});
-				continue;
-			}
+		if(newArr[0] == 'p'){
+			vertexNumber=parseInt(newArr[2]);
 		}
-
+		if(newArr[0] == 'e'){
+			edgesArray.push({from: newArr[1]-1,to: newArr[2]-1});
+		}
 	}
 
 	colored = colored.split(" ");
 	$("#numberColors").text(colored[0]);
-	for(var i=1; i<vertexNumber; i++) 
+	for(var i=0; i<vertexNumber; i++) 
 	{
-		var fontcolor = getContrastYIQ(colors[colored[i]]);
-		nodesArray.push({id: i, label: "Node "+i,font: {
+		var fontcolor = getContrastYIQ(colors[colored[i+1]]);
+		nodesArray.push({id: i, label: "Node "+(i+1),font: {
 			color: fontcolor
-		} , color: colors[colored[i]]});
+		} , color: colors[colored[i+1]]});
 	}
 
 	startNetwork(nodesArray,edgesArray);
